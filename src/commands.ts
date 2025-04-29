@@ -10,7 +10,7 @@ export const botCommands = (bot: Telegraf<MyContext>) => {
     ]).catch(err => console.log(err));
 
     bot.command('start', async (ctx) => {
-            await ctx.reply("You are in the main menu Choose an option:", mainMenu)
+            await ctx.reply("You are in the main menu. \nChoose an option:", mainMenu)
         }
     )
 

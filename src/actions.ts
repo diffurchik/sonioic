@@ -3,7 +3,8 @@ import {Context} from "node:vm";
 import {MyContext, Quote} from "./types";
 import {DB} from "./db";
 import {getUserData} from "./helper";
-import {backToPhraseMenu, quoteMenu} from "./menu";
+import {backToPhraseMenu, quoteMenu, settingsMenu} from "./menu";
+import {quoteView} from "./quote";
 
 export const actions = (bot: Telegraf<MyContext>, phrasesList: Record<number, Quote>) => {
     const db = new DB();
@@ -12,8 +13,8 @@ export const actions = (bot: Telegraf<MyContext>, phrasesList: Record<number, Qu
         const {userId} = getUserData(ctx)
         const phrase = await db.getRandomPhrase()
         if (phrase && userId) {
-            phrasesList[userId] = {id: phrase.id, content: phrase.content, ru_translation: phrase.ru_translation};
-            await ctx.reply(phrase.content, {reply_markup: quoteMenu})
+            phrasesList[userId] = {id: phrase.id, content: phrase.content, ru_translation: phrase.ru_translation, author: phrase.author};
+            await ctx.replyWithMarkdownV2(quoteView(phrase.content, phrase.author), {reply_markup: quoteMenu})
         } else {
             await ctx.reply('error')
         }
@@ -29,7 +30,21 @@ export const actions = (bot: Telegraf<MyContext>, phrasesList: Record<number, Qu
     bot.action('BACK_TO_PHRASE_MENU', async (ctx) => {
         const {userId} = getUserData(ctx)
         if (userId) {
-            await ctx.editMessageText(phrasesList[userId].content, {reply_markup: quoteMenu});
+            await ctx.editMessageText(quoteView(
+                phrasesList[userId].content, phrasesList[userId].author),
+                {reply_markup: quoteMenu, parse_mode: 'MarkdownV2'});
+        }
+    })
+
+    bot.action('SET_SCHEDULE', async (ctx) => {
+        const {userId} = getUserData(ctx)
+        const send_quote_daily = true
+        const quote_time = ''
+        if (userId) {
+            const text: string = `Your current settings is: \n\n` +
+                `▪️Send a random quote daily: ${send_quote_daily ? `✅` : `No`}\n` +
+                `▪️Time to send a random card: *${quote_time ? quote_time : 'No'}*\n `
+            await ctx.editMessageText(text, {reply_markup: settingsMenu, parse_mode: "MarkdownV2"})
         }
     })
 }

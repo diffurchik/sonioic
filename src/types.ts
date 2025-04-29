@@ -16,5 +16,6 @@ export interface UserData {
 export type Quote = {
     id: number;
     content: string;
+    author: string;
     ru_translation: string;
 }
