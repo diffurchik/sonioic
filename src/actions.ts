@@ -11,7 +11,7 @@ export const actions = (bot: Telegraf<MyContext>, phrasesList: Record<number, Qu
 
     bot.action('GET_QUOTE', async (ctx: Context) => {
         const {userId} = getUserData(ctx)
-        const phrase = await db.getRandomPhrase()
+        const phrase = await db.getRandomQuote()
         if (phrase && userId) {
             phrasesList[userId] = {id: phrase.id, content: phrase.content, ru_translation: phrase.ru_translation, author: phrase.author};
             await ctx.replyWithMarkdownV2(quoteView(phrase.content, phrase.author), {reply_markup: quoteMenu})
@@ -38,9 +38,10 @@ export const actions = (bot: Telegraf<MyContext>, phrasesList: Record<number, Qu
 
     bot.action('SET_SCHEDULE', async (ctx) => {
         const {userId} = getUserData(ctx)
-        const send_quote_daily = true
-        const quote_time = ''
         if (userId) {
+        const schedule = await db.getUserSchedule(userId)
+        const send_quote_daily = schedule?.send_quote
+        const quote_time = schedule? schedule.schedule : null
             const text: string = `Your current settings is: \n\n` +
                 `▪️Send a random quote daily: ${send_quote_daily ? `✅` : `No`}\n` +
                 `▪️Time to send a random card: *${quote_time ? quote_time : 'No'}*\n `

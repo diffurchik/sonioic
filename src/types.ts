@@ -19,3 +19,9 @@ export type Quote = {
     author: string;
     ru_translation: string;
 }
+
+export type UserScheduleType = {
+    userId: number,
+    send_quote: boolean,
+    schedule: string
+}

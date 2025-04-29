@@ -20,7 +20,8 @@ import {Markup} from "telegraf";
     export const settingsMenu = {
         inline_keyboard: [
             [{text: '👍 I want to get random quote every day', callback_data: 'SET_QUOTE_DAILY'}],
-            [{text: '⏰ Set time', callback_data: 'SET_TIME'}]
+            [{text: '⏰ Set time', callback_data: 'SET_TIME'}],
+            [{text: '🔙 Back to main menu', callback_data: 'MAIN_MANU'}]
         ]
     }
 

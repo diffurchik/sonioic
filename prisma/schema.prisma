@@ -16,9 +16,10 @@ datasource db {
 }
 
 model UserSetting {
-  id       Int    @id @default(autoincrement())
-  userId   String @unique
-  schedule String
+  id         Int     @id @default(autoincrement())
+  userId     Int     @unique
+  schedule   String
+  send_quote Boolean @default(false)
 }
 
 model StoicPhrase {

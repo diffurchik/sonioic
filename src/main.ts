@@ -5,7 +5,7 @@ import {MyContext, Quote} from './types';
 import {mainMenu} from './menu';
 import { botOn } from './botOn';
 import {botCommands} from "./commands";
-// import {loadSchedules} from "./schedule";
+import {loadSchedules} from "./schedule";
 
 config();
 
@@ -34,9 +34,9 @@ bot.launch()
     .then(() => console.log('Bot is running...'))
     .catch(error => console.error('Launch failed', error));
 
-// if (bot) bot.telegram.getMe().then(async (ctx) => {
-//     await loadSchedules(ctx, bot)
-// })
+if (bot) bot.telegram.getMe().then(async (ctx) => {
+    await loadSchedules(ctx, bot)
+})
 
 process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));
