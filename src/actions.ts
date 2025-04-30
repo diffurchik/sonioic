@@ -39,7 +39,7 @@ export const actions = (bot: Telegraf<MyContext>, phrasesList: Record<number, Qu
     bot.action('SET_SCHEDULE', async (ctx) => {
         const {userId} = getUserData(ctx)
         if (userId) {
-        const schedule = await db.getUserSchedule(userId)
+        const schedule = await db.getUserSchedule(userId.toString())
         const send_quote_daily = schedule?.send_quote
         const quote_time = schedule? schedule.schedule : null
             const text: string = `Your current settings is: \n\n` +
