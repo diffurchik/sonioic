@@ -35,7 +35,7 @@ bot.launch()
     .catch(error => console.error('Launch failed', error));
 
 if (bot) bot.telegram.getMe().then(async (ctx) => {
-    await loadSchedules(ctx, bot)
+    await loadSchedules(ctx, bot, phrasesList)
 })
 
 process.once('SIGINT', () => bot.stop('SIGINT'));
