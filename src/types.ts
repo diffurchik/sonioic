@@ -21,7 +21,8 @@ export type Quote = {
 }
 
 export type UserScheduleType = {
-    userId: number,
+    id: number;
+    userId: string,
     send_quote: boolean,
     schedule: string
 }
