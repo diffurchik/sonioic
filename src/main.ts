@@ -1,7 +1,7 @@
 import { Telegraf } from 'telegraf';
 import { config } from 'dotenv';
 import { actions } from './actions';
-import {MyContext, Quote} from './types';
+import {ActionSteps, MyContext, Quote} from './types';
 import {mainMenu} from './menu';
 import { botOn } from './botOn';
 import {botCommands} from "./commands";
@@ -21,10 +21,11 @@ console.log(`✅ Using ${isProduction ? 'PROD' : 'TEST'} bot token`);
 export const bot = new Telegraf<MyContext>(BOT_TOKEN);
 
 const phrasesList: Record<number, Quote> = {}
+const userActionState: Record<number, {step: ActionSteps}> = {}
 
-actions(bot, phrasesList);
+actions(bot, phrasesList, userActionState);
 botCommands(bot)
-botOn(bot);
+botOn(bot, userActionState);
 
 bot.start((ctx) =>
     ctx.reply('Welcome to the bot! Choose an option:', mainMenu)

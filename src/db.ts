@@ -18,7 +18,7 @@ export class DB {
         }
     }
 
-    async getUserSchedule(userID: string) {
+    async getUserSchedule(userID: number) {
         try {
             const schedule = await prisma.userSetting.findUnique({where: {userId: userID}});
             if (!schedule) {

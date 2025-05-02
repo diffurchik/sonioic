@@ -6,6 +6,16 @@ export interface MyWizardSession extends Scenes.WizardSessionData {
     translation: string
 }
 
+export type ActionSteps = 'setTime'
+
+export enum Actions {
+    GET_QUOTE = 'GET_QUOTE',
+    GET_RU_TRANSLATION = 'GET_RU_TRANSLATION',
+    BACK_TO_PHRASE_MENU = 'BACK_TO_PHRASE_MENU',
+    GET_SCHEDULE = 'GET_SCHEDULE',
+    SET_TIME = 'SET_TIME',
+}
+
 export type MyContext = Scenes.WizardContext<MyWizardSession>;
 
 export interface UserData {
@@ -22,7 +32,7 @@ export type Quote = {
 
 export type UserScheduleType = {
     id: number;
-    userId: string,
+    userId: number,
     send_quote: boolean,
     schedule: string
 }

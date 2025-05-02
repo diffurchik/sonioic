@@ -2,7 +2,7 @@ import {Markup} from "telegraf";
 
     export const mainMenu = Markup.inlineKeyboard([
         [Markup.button.callback('Get a random stoic quote', 'GET_QUOTE')],
-        [{text: '🗓️ Schedule', callback_data: 'SET_SCHEDULE'}]
+        [{text: '🗓️ Schedule', callback_data: 'GET_SCHEDULE'}]
     ])
 
     export const quoteMenu = {
