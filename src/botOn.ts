@@ -1,9 +1,11 @@
 import {message} from "telegraf/filters";
 import {ActionSteps, MyContext} from "./types";
 import {Telegraf} from "telegraf";
+import {DB} from "./db";
 
 export const botOn = (bot: Telegraf<MyContext>, userActionState:  Record<number, {step: ActionSteps}>) => {
 
+    const db = new DB()
     bot.on(message('text'), async (ctx) => {
         const userId = ctx.from.id;
 
@@ -17,9 +19,14 @@ export const botOn = (bot: Telegraf<MyContext>, userActionState:  Record<number,
         if (state.step === 'setTime') {
             const time = ctx.message.text;
             if (!/^\d{2}:\d{2}$/.test(time)) {
-                return ctx.reply("Invalid time format. Please enter time as HH:MM (24-hour).");
+                return ctx.reply("Invalid time format. Please, enter time as HH:MM (24-hour) For example, 09:30.");
             }
-            if (!ctx.from) return
+            const result = await db.updateUserSchedule(userId, { schedule: time });
+            if(result?.schedule === time) {
+                return ctx.replyWithMarkdownV2(`👍 Successfully updated schedule for *${time}*`);
+            } else {
+                return ctx.reply("Failed to update schedule for " + time);
+            }
         }
     })
 }

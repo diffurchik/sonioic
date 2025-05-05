@@ -1,4 +1,4 @@
-import {PrismaClient} from "@prisma/client";
+import {Prisma, PrismaClient} from "@prisma/client";
 import {UserScheduleType} from "./types";
 
 const prisma = new PrismaClient();
@@ -46,5 +46,16 @@ export class DB {
     }
 
     async addUserQuote(){}
+
+    async updateUserSchedule(userID: number, updates: Prisma.UserSettingUpdateInput){
+        try  {
+            const result= await prisma.userSetting.update({where: {userId: userID}, data: updates});
+            if(result){
+                return result;
+            }
+        } catch (err) {
+            console.error('Error updating user schedule:', err);
+        }
+    }
 }
 
