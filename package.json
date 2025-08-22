@@ -8,10 +8,12 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:verbose": "jest --verbose",
-    "start": "npx ts-node src/main.ts",
     "postinstall": "prisma generate",
     "migrate:deploy": "prisma migrate deploy",
-    "start:with-migrations": "npm run migrate:deploy && npm run start"
+    "start:with-migrations": "npm run migrate:deploy && npm run start",
+    "build": "tsc",
+    "start": "node dist/main.js",
+    "dev": "ts-node src/main.ts"
   },
   "repository": {
     "type": "git",
