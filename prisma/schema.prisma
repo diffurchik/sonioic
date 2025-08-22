@@ -15,16 +15,40 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model UserSetting {
+model userSetting {
   id         Int     @id @default(autoincrement())
-  userId     Int     @unique
+  userId     Int     @unique  @map("user_id")
   schedule   String
   send_quote Boolean @default(false)
+
+  @@map("user_setting")
 }
 
-model StoicPhrase {
+model stoicPhrase {
   id             Int    @id @default(autoincrement())
   content        String
-  ru_translation String @default("")
+  ruTranslation String @default("") @map("ru_translation")
   author         String @default("")
+
+  @@map("stoic_phrase")
+}
+
+model sharedSettings {
+  id              Int     @id @default(autoincrement())
+  phraseId        Int     @map("id_phrase")
+  userId          Int
+  isShared        Boolean @default(false) @map("is_shared")
+  showUserName   Boolean @default(false) @map("show_user_name")
+
+  @@map("shared_settings")
+}
+
+model phraseLikes {
+  id         Int     @id @default(autoincrement())
+  phraseId   Int     @map("id_phrase")
+  likes      Int
+  dislikes    Int
+
+  @@map("phrase_likes")
+
 }

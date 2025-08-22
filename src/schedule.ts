@@ -1,17 +1,19 @@
 import {MyContext, Quote, UserScheduleType} from "./types";
 import {Telegraf} from "telegraf";
 import {Context} from "node:vm";
-import {DB} from "./db";
 import {ScheduledTask} from 'node-cron'
 import cron from 'node-cron';
 import {sendQuote} from "./quote";
+import { UserSetting } from "./db/userSetting";
+import { StoicPhraseTable } from "./db/stoicPhraseTable";
 
 const scheduledJobs: Record<number, { quote?: ScheduledTask }> = {};
 
-const db = new DB()
+const userSetting = new UserSetting()
+const stoicPhrase = new StoicPhraseTable()
 
 export async function loadSchedules(ctx: any, bot: Telegraf<MyContext>, phrasesList:Record<number, Quote>) {
-    const schedules = await db.getAllUserSchedules()
+    const schedules = await userSetting.getAllUserSchedules();
     if (schedules && schedules.length !== 0) {
         schedules.forEach((schedule) => {
             scheduleCard(schedule, ctx, bot, phrasesList)
@@ -36,9 +38,9 @@ export function scheduleCard(userSettings: UserScheduleType, ctx: Context, bot: 
 
         scheduledJobs[userId].quote = cron.schedule(
             cronExpressionRandom, async () => {
-                const quote = await db.getRandomQuote();
+                const quote = await stoicPhrase.getRandomQuote();
                 if (quote) {
-                    phrasesList[userId] = {id: quote.id, author: quote.author, content: quote.content, ru_translation: quote.ru_translation}
+                    phrasesList[userId] = {id: quote.id, author: quote.author, content: quote.content, ru_translation: quote.ruTranslation}
                     await sendQuote(quote.content, quote.author, bot, userId);
                 } else {
                     await ctx.reply('There is not cards to study \n Click "Add new" to start education');

@@ -6,13 +6,17 @@ export interface MyWizardSession extends Scenes.WizardSessionData {
     translation: string
 }
 
-export type ActionSteps = 'setTime'
+export type ActionSteps = 'setTime' | "addQuote"
 
 export enum Actions {
     GET_QUOTE = 'GET_QUOTE',
+    ADD_QUOTE = 'ADD_QUOTE',
+
     GET_RU_TRANSLATION = 'GET_RU_TRANSLATION',
+
     BACK_TO_PHRASE_MENU = 'BACK_TO_PHRASE_MENU',
     BACK_TO_MAIN_MENU = 'BACK_TO_MAIN_MENU',
+
     GET_SCHEDULE = 'GET_SCHEDULE',
     SET_TIME = 'SET_TIME',
     SET_QUOTE_DAILY = 'SET_QUOTE_DAILY',

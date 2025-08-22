@@ -3,6 +3,7 @@ import {Actions} from "./types";
 
 export const mainMenu = Markup.inlineKeyboard([
     [Markup.button.callback('Get a random stoic quote', Actions.GET_QUOTE)],
+    [Markup.button.callback('📝 Add a stoic quote', Actions.ADD_QUOTE)],
     [{text: '🗓️ Schedule', callback_data: 'GET_SCHEDULE'}]
 ])
 
