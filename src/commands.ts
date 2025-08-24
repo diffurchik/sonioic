@@ -8,7 +8,7 @@ export const botCommands = (bot: Telegraf<MyContext>) => {
   bot.telegram
     .setMyCommands([
       { command: "main menu", description: "open main menu" },
-      {command: "add", description: ""},
+      {command: "add", description: "add a new quote"},
       { command: "about", description: "Information about the bot" },
       { command: "help", description: "Get help" },
     ])

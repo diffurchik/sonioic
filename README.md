@@ -6,7 +6,7 @@ A Telegram bot that delivers daily Stoic wisdom to help you stay grounded, mindf
 
 **sonioic** is your personal companion for daily Stoic philosophy. It shares timeless quotes from renowned Stoic philosophers like Marcus Aurelius, Seneca, and Epictetus, helping you cultivate wisdom, resilience, and inner peace.
 
-## ✨ Features
+## Features
 
 - **Daily Stoic Quotes**: Receive inspiring Stoic wisdom on demand
 - **Scheduled Reflections**: Set up daily quote delivery at your preferred time
@@ -14,14 +14,14 @@ A Telegram bot that delivers daily Stoic wisdom to help you stay grounded, mindf
 - **Interactive Menu**: Easy-to-use interface for all bot functions
 - **Quote Management**: Add your own favorite Stoic phrases to the collection
 
-## 🛠️ Built With
+## Built With
 
 - **Telegraf.js** - Telegram Bot API framework
 - **TypeScript** - Type-safe JavaScript
 - **Prisma** - Database ORM
 - **Node.js** - Runtime environment
 
-## 📱 Commands
+## Commands
 
 - `/start` - Open main menu
 - `/add` - Add new Stoic phrase

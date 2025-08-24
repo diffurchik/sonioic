@@ -124,13 +124,7 @@ export const actions = (
 
   bot.action(Actions.ADD_QUOTE, async (ctx) => {
     try {
-      const { userId } = getUserData(ctx);
-      if (userId) {
-        await ctx.reply("Please, send me a quote", {
-          reply_markup: { force_reply: true },
-        });
-        userActionState[userId] = { step: "addQuote" };
-      }
+      await ctx.scene.enter("add-phrase")
     } catch (e) {
       console.log(e);
     }
