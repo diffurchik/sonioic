@@ -5,6 +5,6 @@
 
 */
 -- AlterTable
-ALTER TABLE "StoicPhrase" DROP COLUMN "ru_translate",
+ALTER TABLE stoic_phrase DROP COLUMN "ru_translate",
 ADD COLUMN     "author" TEXT NOT NULL DEFAULT '',
 ADD COLUMN     "ru_translation" TEXT NOT NULL DEFAULT '';

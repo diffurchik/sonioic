@@ -104,7 +104,9 @@ export const actions = (
             send_quote: !userSchedule?.send_quote,
           });
         } else {
-          result = await userSetting.createUserSchedule(userId, {sendQuote: true});
+          result = await userSetting.createUserSchedule(userId, {
+            sendQuote: true,
+          });
         }
 
         if (result) {
@@ -124,12 +126,13 @@ export const actions = (
     try {
       const { userId } = getUserData(ctx);
       if (userId) {
-        await ctx.reply(
-            "Please, send me a quote", { reply_markup: { force_reply: true } });
+        await ctx.reply("Please, send me a quote", {
+          reply_markup: { force_reply: true },
+        });
         userActionState[userId] = { step: "addQuote" };
       }
-    } catch (e){
+    } catch (e) {
       console.log(e);
     }
-  })
+  });
 };

@@ -14,7 +14,7 @@ DROP TABLE "Likes";
 DROP TABLE "Shared";
 
 -- DropTable
-DROP TABLE "StoicPhrase";
+DROP TABLE stoic_phrase;
 
 -- DropTable
 DROP TABLE "UserSetting";

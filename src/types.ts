@@ -20,6 +20,9 @@ export enum Actions {
     GET_SCHEDULE = 'GET_SCHEDULE',
     SET_TIME = 'SET_TIME',
     SET_QUOTE_DAILY = 'SET_QUOTE_DAILY',
+
+    YES = "Yes",
+    NO = "No"
 }
 
 export type MyContext = Scenes.WizardContext<MyWizardSession>;
