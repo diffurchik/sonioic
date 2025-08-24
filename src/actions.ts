@@ -1,11 +1,11 @@
-import { Telegraf } from "telegraf";
-import { Context } from "node:vm";
-import { Actions, ActionSteps, MyContext, Quote } from "./types";
-import { getUserData } from "./helper";
-import { backToPhraseMenu, mainMenu, quoteMenu, settingsMenu } from "./menu";
-import { quoteView } from "./quote";
-import { StoicPhraseTable } from "./db/stoicPhraseTable";
-import { UserSetting } from "./db/userSetting";
+import { Telegraf } from 'telegraf';
+import { Context } from 'node:vm';
+import { Actions, ActionSteps, MyContext, Quote } from './types';
+import { getUserData } from './helper';
+import { backToPhraseMenu, mainMenu, quoteMenu, settingsMenu } from './menu';
+import { quoteView } from './quote';
+import { StoicPhraseTable } from './db/stoicPhraseTable';
+import { UserSetting } from './db/userSetting';
 
 export const actions = (
   bot: Telegraf<MyContext>,
@@ -30,7 +30,7 @@ export const actions = (
       });
     } else {
       await ctx.reply(
-        "❌ Unable to retrieve quote. Please try again later or contact @diffurchik if the issue persists."
+        '❌ Unable to retrieve quote. Please try again later or contact @diffurchik if the issue persists.'
       );
     }
   });
@@ -46,7 +46,7 @@ export const actions = (
 
   bot.action(Actions.BACK_TO_MAIN_MENU, async (ctx: Context) => {
     await ctx.editMessageText(
-      "You are in the main menu. \nChoose an option:",
+      'You are in the main menu. \nChoose an option:',
       mainMenu
     );
   });
@@ -56,7 +56,7 @@ export const actions = (
     if (userId) {
       await ctx.editMessageText(
         quoteView(phrasesList[userId].content, phrasesList[userId].author),
-        { reply_markup: quoteMenu, parse_mode: "MarkdownV2" }
+        { reply_markup: quoteMenu, parse_mode: 'MarkdownV2' }
       );
     }
   });
@@ -68,12 +68,12 @@ export const actions = (
       const send_quote_daily = schedule?.send_quote;
       const quote_time = schedule ? schedule.schedule : null;
       const text: string =
-        `Your current settings is: \n\n` +
-        `▪️Send a random quote daily: ${send_quote_daily ? `✅` : `No`}\n` +
-        `▪️Time to send a random card: *${quote_time ? quote_time : "No"}*\n `;
+        'Your current settings is: \n\n' +
+        `▪️Send a random quote daily: ${send_quote_daily ? '✅' : 'No'}\n` +
+        `▪️Time to send a random card: *${quote_time ? quote_time : 'No'}*\n `;
       await ctx.editMessageText(text, {
         reply_markup: settingsMenu(send_quote_daily),
-        parse_mode: "MarkdownV2",
+        parse_mode: 'MarkdownV2',
       });
     }
   });
@@ -82,11 +82,11 @@ export const actions = (
     try {
       const { userId } = getUserData(ctx);
       await ctx.reply(
-        "At what time (HH:MM, 24-hour format) should I send you a random quote daily?",
+        'At what time (HH:MM, 24-hour format) should I send you a random quote daily?',
         { reply_markup: { force_reply: true } }
       );
       if (userId) {
-        userActionState[userId] = { step: "setTime" };
+        userActionState[userId] = { step: 'setTime' };
       }
     } catch (error) {
       console.log(error);
@@ -110,10 +110,10 @@ export const actions = (
         }
 
         if (result) {
-          await ctx.reply("👍 Successfully updated settings", mainMenu);
+          await ctx.reply('👍 Successfully updated settings', mainMenu);
         } else {
           await ctx.replyWithMarkdownV2(
-            "Failed to update schedule. Please, try again or ask help @diffurchik"
+            'Failed to update schedule. Please, try again or ask help @diffurchik'
           );
         }
       }
@@ -124,7 +124,7 @@ export const actions = (
 
   bot.action(Actions.ADD_QUOTE, async (ctx) => {
     try {
-      await ctx.scene.enter("add-phrase")
+      await ctx.scene.enter('add-phrase');
     } catch (e) {
       console.log(e);
     }

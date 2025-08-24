@@ -1,9 +1,7 @@
-import { message } from "telegraf/filters";
-import { ActionSteps, MyContext } from "./types"
-import { Telegraf } from "telegraf";
-import { UserSetting } from "./db/userSetting";
-import { StoicPhraseTable } from "./db/stoicPhraseTable";
-import { SharedSettingsTable } from "./db/sharedSettingsTable";
+import { message } from 'telegraf/filters';
+import { ActionSteps, MyContext } from './types';
+import { Telegraf } from 'telegraf';
+import { UserSetting } from './db/userSetting';
 
 export const botOn = (
   bot: Telegraf<MyContext>,
@@ -11,21 +9,21 @@ export const botOn = (
 ) => {
   const userSetting = new UserSetting();
 
-  bot.on(message("text"), async (ctx) => {
+  bot.on(message('text'), async (ctx) => {
     const userId = ctx.from.id;
 
     if (!userActionState[userId]) {
-      await ctx.reply("Please start by selecting an action.");
+      await ctx.reply('Please start by selecting an action.');
       return;
     }
 
     let state = userActionState[userId];
 
-    if (state.step === "setTime") {
+    if (state.step === 'setTime') {
       const time = ctx.message.text;
       if (!/^\d{2}:\d{2}$/.test(time)) {
         return ctx.reply(
-          "Invalid time format. Please, enter time as HH:MM (24-hour) For example, 09:30."
+          'Invalid time format. Please, enter time as HH:MM (24-hour) For example, 09:30.'
         );
       }
       const result = await userSetting.updateUserSchedule(userId, {
@@ -36,7 +34,7 @@ export const botOn = (
           `👍 Successfully updated schedule for *${time}*`
         );
       } else {
-        return ctx.reply("Failed to update schedule for " + time);
+        return ctx.reply('Failed to update schedule for ' + time);
       }
     }
   });

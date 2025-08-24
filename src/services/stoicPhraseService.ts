@@ -1,5 +1,5 @@
-import { SharedSettingsTable } from "../db/sharedSettingsTable";
-import { StoicPhraseTable } from "../db/stoicPhraseTable";
+import { SharedSettingsTable } from '../db/sharedSettingsTable';
+import { StoicPhraseTable } from '../db/stoicPhraseTable';
 
 interface stoicPhraseServiceData {
   userId: number;
@@ -15,7 +15,7 @@ export class StoicPhraseService {
 
   async addPhraseFromUser(data: stoicPhraseServiceData) {
     const { userId, phrase, userAuthor, isShared, ruTranslation } = data;
-    const inputAuthor = userAuthor ? userAuthor : "Animus";
+    const inputAuthor = userAuthor ? userAuthor : 'Animus';
 
     const result = await this.stoicRepo.addUserPhrase(
       phrase,

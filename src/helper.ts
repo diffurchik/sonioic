@@ -1,6 +1,6 @@
-import { Context } from "node:vm";
-import { UserData } from "./types";
-import { texts } from "./texts";
+import { Context } from 'node:vm';
+import { UserData } from './types';
+import { texts } from './texts';
 
 export function getUserData(ctx: Context): UserData {
   const fromData = ctx.from;
@@ -13,7 +13,7 @@ export function getUserData(ctx: Context): UserData {
 }
 
 export function escapeMarkdownV2(text: string): string {
-  return text.replace(/([_*\[\]()~`>#+\-=|{}.!\\])/g, "\\$1");
+  return text.replace(/([_*\[\]()~`>#+\-=|{}.!\\])/g, '\\$1');
 }
 
 export function getText(key: keyof typeof texts): string {

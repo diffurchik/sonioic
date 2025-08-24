@@ -1,6 +1,8 @@
 import { UserScheduleType } from '../../types';
 
-export const createMockUserSchedule = (overrides: Partial<UserScheduleType> = {}): UserScheduleType => ({
+export const createMockUserSchedule = (
+  overrides: Partial<UserScheduleType> = {}
+): UserScheduleType => ({
   id: 1,
   userId: 123,
   send_quote: true,
@@ -16,7 +18,8 @@ export const createMockStoicPhrase = (overrides: any = {}) => ({
   ...overrides,
 });
 
-export const createMockError = (message: string = 'Test error') => new Error(message);
+export const createMockError = (message: string = 'Test error') =>
+  new Error(message);
 
 export const mockConsoleError = () => {
   return jest.spyOn(console, 'error').mockImplementation(() => {});
