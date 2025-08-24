@@ -55,3 +55,10 @@ export const yesNoMenu = Markup.inlineKeyboard([
     { text: "No", callback_data: Actions.NO },
   ],
 ]);
+
+export const finishMenu = Markup.inlineKeyboard([
+  [
+    { text: "Cancel ❌", callback_data: Actions.CANCEL },
+    { text: "Save 💾", callback_data: Actions.SAVE },
+  ],
+]);

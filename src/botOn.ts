@@ -4,15 +4,12 @@ import { Telegraf } from "telegraf";
 import { UserSetting } from "./db/userSetting";
 import { StoicPhraseTable } from "./db/stoicPhraseTable";
 import { SharedSettingsTable } from "./db/sharedSettingsTable";
-import { conversations, createConversation } from "@grammyjs/conversations";
 
 export const botOn = (
   bot: Telegraf<MyContext>,
   userActionState: Record<number, { step: ActionSteps }>
 ) => {
   const userSetting = new UserSetting();
-  const stoicPhrase = new StoicPhraseTable();
-    const sharedSettings = new SharedSettingsTable();
 
   bot.on(message("text"), async (ctx) => {
     const userId = ctx.from.id;

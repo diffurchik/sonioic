@@ -1,6 +1,6 @@
 import { Scenes } from "telegraf";
 import { MyContext } from "../types";
-import { yesNoMenu } from "../menu";
+import {finishMenu, mainMenu, yesNoMenu} from "../menu";
 import { StoicPhraseTable } from "../db/stoicPhraseTable";
 import { StoicPhraseService } from "../services/stoicPhraseService";
 
@@ -72,16 +72,45 @@ export const addPhraseWizard = new Scenes.WizardScene<MyContext>(
 
       (ctx.wizard.state as any).data.isShared = answer === "Yes";
 
-      const phraseService = new StoicPhraseService();
       const { quote, author, isShared } = (ctx.wizard.state as any).data;
-        await ctx.reply(`Your quote is: ${quote}\n Author: ${author}`);
-        const userId = ctx.from?.id
+      const checkMessage = `Your quote is: ${quote}\n Author: ${author}\n Shared: ${isShared}\n\n Do you want to save it?`;
+
+      await ctx.reply(checkMessage, finishMenu);
+      return ctx.wizard.next();
+    }
+  },
+
+  //Step 4: DB
+  async (ctx: MyContext) => {
+    if (ctx.callbackQuery && "data" in ctx.callbackQuery) {
+      const answer = ctx.callbackQuery.data;
+        await ctx.answerCbQuery();
+        
+      if (answer === "Cancel") {
+        await ctx.reply("Action cancelled. You can always add a quote later. What do you want to do now?", mainMenu);
+        return ctx.scene.leave();
+      }
+        
+      if (answer === "Save") {
+        const phraseService = new StoicPhraseService();
+        const { quote, author, isShared } = (ctx.wizard.state as any).data;
+
+        const userId = ctx.from?.id;
         if (userId) {
-            await phraseService.addPhraseFromUser({userId, phrase: quote, userAuthor: author, isShared })
-        } else { 
-            ctx.reply("We can't recongize you id, please write @diffurchik for help")
+          await phraseService.addPhraseFromUser({
+            userId,
+            phrase: quote,
+            userAuthor: author,
+            isShared,
+          });
+          await ctx.reply('Great! Your quote has been recorded. You can add more quotes anytime.')
+        } else {
+          await ctx.reply(
+            "Hmm, something went wrong with your ID. Reach out to @diffurchik"
+          );
         }
-      return ctx.scene.leave();
+        return ctx.scene.leave();
+      }
     }
   }
 );

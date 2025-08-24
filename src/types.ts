@@ -22,7 +22,9 @@ export enum Actions {
     SET_QUOTE_DAILY = 'SET_QUOTE_DAILY',
 
     YES = "Yes",
-    NO = "No"
+    NO = "No",
+    CANCEL = "Cancel",
+    SAVE = "Save"
 }
 
 export type MyContext = Scenes.WizardContext<MyWizardSession>;
