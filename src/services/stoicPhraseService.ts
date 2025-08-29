@@ -17,18 +17,10 @@ export class StoicPhraseService {
     const { userId, phrase, userAuthor, isShared, ruTranslation } = data;
     const inputAuthor = userAuthor ? userAuthor : 'Animus';
 
-    const result = await this.stoicRepo.addUserPhrase(
-      phrase,
-      inputAuthor,
-      ruTranslation
-    );
+    const result = await this.stoicRepo.addUserPhrase(phrase, inputAuthor, ruTranslation);
 
     if (result && result.id) {
-      await this.sharedRepo.sharePhraseWithUser(
-        userId,
-        result.id,
-        isShared ?? false
-      );
+      await this.sharedRepo.sharePhraseWithUser(userId, result.id, isShared ?? false);
     }
   }
 }

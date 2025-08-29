@@ -45,24 +45,19 @@ export function scheduleCard(
 
     if (!scheduledJobs[userId]) scheduledJobs[userId] = {};
 
-    scheduledJobs[userId].quote = cron.schedule(
-      cronExpressionRandom,
-      async () => {
-        const quote = await stoicPhrase.getRandomQuote();
-        if (quote) {
-          phrasesList[userId] = {
-            id: quote.id,
-            author: quote.author,
-            content: quote.content,
-            ru_translation: quote.ruTranslation,
-          };
-          await sendQuote(quote.content, quote.author, bot, userId);
-        } else {
-          await ctx.reply(
-            'There is not cards to study \n Click "Add new" to start education'
-          );
-        }
+    scheduledJobs[userId].quote = cron.schedule(cronExpressionRandom, async () => {
+      const quote = await stoicPhrase.getRandomQuote();
+      if (quote) {
+        phrasesList[userId] = {
+          id: quote.id,
+          author: quote.author,
+          content: quote.content,
+          ru_translation: quote.ruTranslation,
+        };
+        await sendQuote(quote.content, quote.author, bot, userId);
+      } else {
+        await ctx.reply('There is not cards to study \n Click "Add new" to start education');
       }
-    );
+    });
   }
 }

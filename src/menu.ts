@@ -26,9 +26,7 @@ export const quoteMenu = {
 };
 
 export const backToPhraseMenu = {
-  inline_keyboard: [
-    [Markup.button.callback('🔙 Back to phrase', 'BACK_TO_PHRASE_MENU')],
-  ],
+  inline_keyboard: [[Markup.button.callback('🔙 Back to phrase', 'BACK_TO_PHRASE_MENU')]],
 };
 
 export const settingsMenu = (isSendingQuoteDaily: boolean = false) => {

@@ -17,7 +17,18 @@ export default [
     rules: {
       quotes: ["error", "single"],
       "@typescript-eslint/no-unused-vars": "error",
-      "prettier/prettier": "error"
+      "prettier/prettier": "error",
+      "function-call-argument-newline": "off",
+      "prettier/prettier": [
+        "error",
+        {
+          semi: true,
+          singleQuote: true,
+          trailingComma: "es5",
+          printWidth: 120,
+          tabWidth: 2,
+        },
+      ],
     },
   },
 ];

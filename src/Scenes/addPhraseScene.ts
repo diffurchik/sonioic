@@ -46,10 +46,7 @@ export const addPhraseWizard = new Scenes.WizardScene<MyContext>(
       await ctx.reply('Please send text, not other content.');
     }
 
-    await ctx.reply(
-      'Do you want to share this stoic quote with others? 📢',
-      yesNoMenu
-    );
+    await ctx.reply('Do you want to share this stoic quote with others? 📢', yesNoMenu);
     return ctx.wizard.next();
   },
 
@@ -64,9 +61,7 @@ export const addPhraseWizard = new Scenes.WizardScene<MyContext>(
         );
       }
       if (answer === 'No') {
-        await ctx.reply(
-          'No worries! 🌿 Your quote will stay private, and we respect your choice.'
-        );
+        await ctx.reply('No worries! 🌿 Your quote will stay private, and we respect your choice.');
       }
 
       (ctx.wizard.state as any).data.isShared = answer === 'Yes';
@@ -105,13 +100,9 @@ export const addPhraseWizard = new Scenes.WizardScene<MyContext>(
             userAuthor: author,
             isShared,
           });
-          await ctx.reply(
-            'Great! Your quote has been recorded. You can add more quotes anytime.'
-          );
+          await ctx.reply('Great! Your quote has been recorded. You can add more quotes anytime.');
         } else {
-          await ctx.reply(
-            'Hmm, something went wrong with your ID. Reach out to @diffurchik'
-          );
+          await ctx.reply('Hmm, something went wrong with your ID. Reach out to @diffurchik');
         }
         return ctx.scene.leave();
       }

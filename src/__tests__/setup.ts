@@ -7,7 +7,11 @@ const mockPrismaClient = {
   userSetting: {
     findUnique: jest.fn(),
     findMany: jest.fn(),
+    create: jest.fn(),
     update: jest.fn(),
+  },
+  sharedSettings: {
+    create: jest.fn(),
   },
 };
 

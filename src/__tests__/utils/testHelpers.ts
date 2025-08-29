@@ -18,8 +18,7 @@ export const createMockStoicPhrase = (overrides: any = {}) => ({
   ...overrides,
 });
 
-export const createMockError = (message: string = 'Test error') =>
-  new Error(message);
+export const createMockError = (message: string = 'Test error') => new Error(message);
 
 export const mockConsoleError = () => {
   return jest.spyOn(console, 'error').mockImplementation(() => {});

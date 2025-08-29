@@ -11,9 +11,7 @@ import { addPhraseWizard } from './Scenes/addPhraseScene';
 config();
 
 const isProduction = process.env.NODE_ENV === 'production';
-const BOT_TOKEN = isProduction
-  ? process.env.BOT_TOKEN_PROD
-  : process.env.BOT_TOKEN_TEST;
+const BOT_TOKEN = isProduction ? process.env.BOT_TOKEN_PROD : process.env.BOT_TOKEN_TEST;
 
 if (!BOT_TOKEN) {
   throw new Error('Bot token is missing. Please add your bot token.');
@@ -33,9 +31,7 @@ actions(bot, phrasesList, userActionState);
 botCommands(bot);
 botOn(bot, userActionState);
 
-bot.start((ctx) =>
-  ctx.reply('Welcome to the bot! Choose an option:', mainMenu)
-);
+bot.start((ctx) => ctx.reply('Welcome to the bot! Choose an option:', mainMenu));
 
 bot
   .launch()

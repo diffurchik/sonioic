@@ -30,9 +30,7 @@ export const botOn = (
         schedule: time,
       });
       if (result?.schedule === time) {
-        return ctx.replyWithMarkdownV2(
-          `👍 Successfully updated schedule for *${time}*`
-        );
+        return ctx.replyWithMarkdownV2(`👍 Successfully updated schedule for *${time}*`);
       } else {
         return ctx.reply('Failed to update schedule for ' + time);
       }

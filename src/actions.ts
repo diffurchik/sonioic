@@ -45,10 +45,7 @@ export const actions = (
   });
 
   bot.action(Actions.BACK_TO_MAIN_MENU, async (ctx: Context) => {
-    await ctx.editMessageText(
-      'You are in the main menu. \nChoose an option:',
-      mainMenu
-    );
+    await ctx.editMessageText('You are in the main menu. \nChoose an option:', mainMenu);
   });
 
   bot.action(Actions.BACK_TO_PHRASE_MENU, async (ctx) => {
@@ -56,7 +53,10 @@ export const actions = (
     if (userId) {
       await ctx.editMessageText(
         quoteView(phrasesList[userId].content, phrasesList[userId].author),
-        { reply_markup: quoteMenu, parse_mode: 'MarkdownV2' }
+        {
+          reply_markup: quoteMenu,
+          parse_mode: 'MarkdownV2',
+        }
       );
     }
   });
@@ -83,7 +83,9 @@ export const actions = (
       const { userId } = getUserData(ctx);
       await ctx.reply(
         'At what time (HH:MM, 24-hour format) should I send you a random quote daily?',
-        { reply_markup: { force_reply: true } }
+        {
+          reply_markup: { force_reply: true },
+        }
       );
       if (userId) {
         userActionState[userId] = { step: 'setTime' };
