@@ -1,8 +1,20 @@
 import { PrismaClient } from '@prisma/client';
+import { PhraseRow } from './types';
 
 const prisma = new PrismaClient();
 
 export class StoicPhraseTable {
+  async getRowByPhraseId(phraseId: number): Promise<PhraseRow | null | undefined> {
+    try {
+      const result = await prisma.stoicPhrase.findUniqueOrThrow({ where: { id: phraseId } });
+      if (result) return result;
+      if (!result) throw new Error();
+    } catch (error) {
+      console.error('Error getting a phrase by phraseID', error);
+      return null;
+    }
+  }
+
   async getRandomQuote() {
     try {
       const phrases = await prisma.stoicPhrase.findMany();

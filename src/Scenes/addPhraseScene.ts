@@ -1,7 +1,7 @@
 import { Scenes } from 'telegraf';
 import { MyContext } from '../types';
 import { finishMenu, mainMenu, yesNoMenu } from '../menu';
-import { StoicPhraseService } from '../services/stoicPhraseService';
+import { StoicPhraseService } from '../db/services/stoicPhraseService';
 
 export const addPhraseWizard = new Scenes.WizardScene<MyContext>(
   'add-phrase',

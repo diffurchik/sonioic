@@ -4,20 +4,23 @@ import { Actions, ActionSteps, MyContext, Quote } from './types';
 import { getUserData } from './helper';
 import { backToPhraseMenu, mainMenu, quoteMenu, settingsMenu } from './menu';
 import { quoteView } from './quote';
-import { StoicPhraseTable } from './db/stoicPhraseTable';
+// import { StoicPhraseTable } from './db/stoicPhraseTable';
 import { UserSetting } from './db/userSetting';
+import { StoicPhraseService } from './db/services/stoicPhraseService';
 
 export const actions = (
   bot: Telegraf<MyContext>,
   phrasesList: Record<number, Quote>,
   userActionState: Record<number, { step: ActionSteps }>
 ) => {
-  const stoicPhrase = new StoicPhraseTable();
+  // const stoicPhrase = new StoicPhraseTable();
   const userSetting = new UserSetting();
+  const stoicPhraseService = new StoicPhraseService();
 
   bot.action(Actions.GET_QUOTE, async (ctx: Context) => {
     const { userId } = getUserData(ctx);
-    const phrase = await stoicPhrase.getRandomQuote();
+    // const phrase = await stoicPhrase.getRandomQuote();
+    const phrase = await stoicPhraseService.getRandomSharedPhrase();
     if (phrase && userId) {
       phrasesList[userId] = {
         id: phrase.id,
@@ -45,7 +48,7 @@ export const actions = (
   });
 
   bot.action(Actions.BACK_TO_MAIN_MENU, async (ctx: Context) => {
-    await ctx.editMessageText('You are in the main menu. \nChoose an option:', mainMenu);
+    await ctx.editMessageText('You are in the main menu. \nChoose an option', mainMenu);
   });
 
   bot.action(Actions.BACK_TO_PHRASE_MENU, async (ctx) => {

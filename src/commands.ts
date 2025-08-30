@@ -8,7 +8,7 @@ export const botCommands = (bot: Telegraf<MyContext>) => {
   bot.telegram
     .setMyCommands([
       { command: 'main menu', description: 'open main menu' },
-      { command: 'add', description: 'add a new quote' },
+      { command: 'add_quote', description: 'add a new quote' },
       { command: 'about', description: 'Information about the bot' },
       { command: 'help', description: 'Get help' },
     ])
@@ -18,7 +18,7 @@ export const botCommands = (bot: Telegraf<MyContext>) => {
     await ctx.reply('You are in the main menu.', mainMenu);
   });
 
-  bot.command('add', async (ctx) => ctx.scene.enter('add-phrase'));
+  bot.command('add_quote', async (ctx) => ctx.scene.enter('add-phrase'));
 
   bot.command('help', async (ctx: Context) => {
     await ctx.reply(getText('help'));

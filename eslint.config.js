@@ -1,5 +1,6 @@
 import tseslint from 'typescript-eslint';
 import prettier from 'eslint-plugin-prettier';
+import { SemicolonPreference } from 'typescript';
 
 export default [
   {
@@ -17,18 +18,16 @@ export default [
     rules: {
       quotes: ["error", "single"],
       "@typescript-eslint/no-unused-vars": "error",
-      "prettier/prettier": "error",
-      "function-call-argument-newline": "off",
-      "prettier/prettier": [
-        "error",
-        {
-          semi: true,
-          singleQuote: true,
-          trailingComma: "es5",
-          printWidth: 120,
-          tabWidth: 2,
-        },
-      ],
+      // "prettier/prettier": [
+      //   "warn",
+      //   {
+      //     semi: false,
+      //     singleQuote: true,
+      //     trailingComma: "es5",
+      //     printWidth: 120,
+      //     tabWidth: 2,
+      //   },
+      // ],
     },
   },
 ];

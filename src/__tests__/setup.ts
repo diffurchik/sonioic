@@ -12,6 +12,7 @@ const mockPrismaClient = {
   },
   sharedSettings: {
     create: jest.fn(),
+    findMany: jest.fn(),
   },
 };
 
