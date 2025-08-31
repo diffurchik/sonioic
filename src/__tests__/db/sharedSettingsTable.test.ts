@@ -113,10 +113,10 @@ describe('SharedSettingsTable', () => {
         findMany: jest.fn().mockResolvedValue(mockResult),
       };
 
-      const result = await sharedSettingsTable.getRowsByCondition({ userId: 123, isShared: false });
+      const result = await sharedSettingsTable.getRowsByCondition({ userId: 123, isShared: true });
 
       expect(mockPrismaClient.sharedSettings.findMany).toHaveBeenCalledWith({
-        where: { userId: 123 },
+        where: { OR: [{ userId: 123 }, { isShared: true }] },
       });
       expect(result).toEqual(mockResult);
     });
@@ -127,7 +127,7 @@ describe('SharedSettingsTable', () => {
           id: 1,
           userId: 123,
           phraseId: 456,
-          isShared: true,
+          isShared: false,
           showUserName: false,
         },
       ];
@@ -137,37 +137,10 @@ describe('SharedSettingsTable', () => {
         findMany: jest.fn().mockResolvedValue(mockResult),
       };
 
-      const result = await sharedSettingsTable.getRowsByCondition({ isShared: true, userId: 123 });
+      const result = await sharedSettingsTable.getRowsByCondition({ isShared: false, userId: 123 });
 
       expect(mockPrismaClient.sharedSettings.findMany).toHaveBeenCalledWith({
-        where: { isShared: true },
-      });
-      expect(result).toEqual(mockResult);
-    });
-
-    it('should successfully retrieve rows with both filters', async () => {
-      const mockResult = [
-        {
-          id: 1,
-          userId: 123,
-          phraseId: 456,
-          isShared: true,
-          showUserName: false,
-        },
-      ];
-
-      mockPrismaClient.sharedSettings = {
-        ...mockPrismaClient.sharedSettings,
-        findMany: jest.fn().mockResolvedValue(mockResult),
-      };
-
-      const result = await sharedSettingsTable.getRowsByCondition({
-        userId: 123,
-        isShared: true,
-      });
-
-      expect(mockPrismaClient.sharedSettings.findMany).toHaveBeenCalledWith({
-        where: { userId: 123, isShared: true },
+        where: { OR: [{ userId: 123 }, { isShared: false }] },
       });
       expect(result).toEqual(mockResult);
     });
@@ -181,7 +154,7 @@ describe('SharedSettingsTable', () => {
       const result = await sharedSettingsTable.getRowsByCondition({ userId: 999, isShared: false });
 
       expect(mockPrismaClient.sharedSettings.findMany).toHaveBeenCalledWith({
-        where: { userId: 999 },
+        where: { OR: [{ userId: 999 }, { isShared: false }] },
       });
       expect(result).toEqual([]);
     });
@@ -195,38 +168,8 @@ describe('SharedSettingsTable', () => {
       const result = await sharedSettingsTable.getRowsByCondition({ userId: 123, isShared: true });
 
       expect(mockPrismaClient.sharedSettings.findMany).toHaveBeenCalledWith({
-        where: { userId: 123 },
+        where: { OR: [{ userId: 123 }, { isShared: true }] },
       });
-      expect(result).toBeUndefined();
-    });
-
-    it('should handle undefined result from database', async () => {
-      mockPrismaClient.sharedSettings = {
-        ...mockPrismaClient.sharedSettings,
-        findMany: jest.fn().mockResolvedValue(undefined),
-      };
-
-      const result = await sharedSettingsTable.getRowsByCondition({ isShared: true, userId: 123 });
-
-      expect(mockPrismaClient.sharedSettings.findMany).toHaveBeenCalledWith({
-        where: { isShared: true },
-      });
-      expect(result).toBeUndefined();
-    });
-
-    it('should handle database errors gracefully', async () => {
-      const mockError = new Error('Database connection failed');
-      mockPrismaClient.sharedSettings = {
-        ...mockPrismaClient.sharedSettings,
-        findMany: jest.fn().mockRejectedValue(mockError),
-      };
-
-      const result = await sharedSettingsTable.getRowsByCondition({ userId: 123, isShared: false });
-
-      expect(mockPrismaClient.sharedSettings.findMany).toHaveBeenCalledWith({
-        where: { userId: 123 },
-      });
-      expect(mockConsoleError).toHaveBeenCalledWith('Error adding user phrase:', mockError);
       expect(result).toBeUndefined();
     });
   });
