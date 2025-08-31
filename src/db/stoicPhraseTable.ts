@@ -4,14 +4,16 @@ import { PhraseRow } from './types';
 const prisma = new PrismaClient();
 
 export class StoicPhraseTable {
-  async getRowByPhraseId(phraseId: number): Promise<PhraseRow | null | undefined> {
+  async getRowByPhraseId(phraseId: number): Promise<PhraseRow | undefined> {
     try {
-      const result = await prisma.stoicPhrase.findUniqueOrThrow({ where: { id: phraseId } });
+      const result: PhraseRow = await prisma.stoicPhrase.findUniqueOrThrow({
+        where: { id: phraseId },
+      });
       if (result) return result;
       if (!result) throw new Error();
     } catch (error) {
       console.error('Error getting a phrase by phraseID', error);
-      return null;
+      return undefined;
     }
   }
 
@@ -19,13 +21,13 @@ export class StoicPhraseTable {
     try {
       const phrases = await prisma.stoicPhrase.findMany();
       if (phrases.length === 0) {
-        return null;
+        return undefined;
       }
       const randomIndex = Math.floor(Math.random() * phrases.length);
       return phrases[randomIndex];
     } catch (err) {
       console.error('Error getting a random phrase:', err);
-      return null;
+      return undefined;
     }
   }
 

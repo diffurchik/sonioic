@@ -1,26 +1,5 @@
-/*
-  Warnings:
-
-  - You are about to drop the `Likes` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Shared` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `StoicPhraseTable` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `UserSetting` table. If the table is not empty, all the data it contains will be lost.
-
-*/
--- DropTable
-DROP TABLE "Likes";
-
--- DropTable
-DROP TABLE "Shared";
-
--- DropTable
-DROP TABLE stoic_phrase;
-
--- DropTable
-DROP TABLE "UserSetting";
-
 -- CreateTable
-CREATE TABLE "user_setting" (
+CREATE TABLE "public"."user_setting" (
     "id" SERIAL NOT NULL,
     "user_id" INTEGER NOT NULL,
     "schedule" TEXT NOT NULL,
@@ -30,7 +9,7 @@ CREATE TABLE "user_setting" (
 );
 
 -- CreateTable
-CREATE TABLE "stoic_phrase" (
+CREATE TABLE "public"."stoic_phrase" (
     "id" SERIAL NOT NULL,
     "content" TEXT NOT NULL,
     "ru_translation" TEXT NOT NULL DEFAULT '',
@@ -40,7 +19,7 @@ CREATE TABLE "stoic_phrase" (
 );
 
 -- CreateTable
-CREATE TABLE "shared_settings" (
+CREATE TABLE "public"."shared_settings" (
     "id" SERIAL NOT NULL,
     "id_phrase" INTEGER NOT NULL,
     "userId" INTEGER NOT NULL,
@@ -51,7 +30,7 @@ CREATE TABLE "shared_settings" (
 );
 
 -- CreateTable
-CREATE TABLE "phrase_likes" (
+CREATE TABLE "public"."phrase_likes" (
     "id" SERIAL NOT NULL,
     "id_phrase" INTEGER NOT NULL,
     "likes" INTEGER NOT NULL,
@@ -61,4 +40,7 @@ CREATE TABLE "phrase_likes" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "user_setting_user_id_key" ON "user_setting"("user_id");
+CREATE UNIQUE INDEX "user_setting_user_id_key" ON "public"."user_setting"("user_id");
+
+-- AddForeignKey
+ALTER TABLE "public"."shared_settings" ADD CONSTRAINT "shared_settings_id_phrase_fkey" FOREIGN KEY ("id_phrase") REFERENCES "public"."stoic_phrase"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

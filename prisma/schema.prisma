@@ -30,6 +30,8 @@ model stoicPhrase {
   ruTranslation String @default("") @map("ru_translation")
   author        String @default("")
 
+  sharedSettings sharedSettings[]
+
   @@map("stoic_phrase")
 }
 
@@ -39,6 +41,8 @@ model sharedSettings {
   userId       Int
   isShared     Boolean @default(false) @map("is_shared")
   showUserName Boolean @default(false) @map("show_user_name")
+
+  phrase stoicPhrase @relation(fields: [phraseId], references: [id])
 
   @@map("shared_settings")
 }

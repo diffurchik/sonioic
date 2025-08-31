@@ -26,19 +26,18 @@ export class StoicPhraseService {
     }
   }
 
-  async getRandomSharedPhrase(): Promise<PhraseRow | null | undefined> {
+  async getRandomPhraseForUser(userId: number): Promise<PhraseRow | undefined> {
     const sharedRows: SharedRow[] | undefined = await this.sharedRepo.getRowsByCondition({
       isShared: true,
+      userId,
     });
 
-    if (!sharedRows || !sharedRows.length) return null;
+    if (!sharedRows || !sharedRows.length) return undefined;
 
     const randomRow: SharedRow | undefined = getRandomElement(sharedRows);
 
     if (randomRow?.id) {
-      const phrase: PhraseRow | null | undefined = await this.stoicRepo.getRowByPhraseId(
-        randomRow?.id
-      );
+      const phrase: PhraseRow | undefined = await this.stoicRepo.getRowByPhraseId(randomRow?.id);
       return phrase;
     }
 

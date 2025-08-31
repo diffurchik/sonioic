@@ -34,16 +34,24 @@ export const addPhraseWizard = new Scenes.WizardScene<MyContext>(
       }
       if (answer === 'No') {
         await ctx.reply('Okay, no author will be added.');
+        (ctx.wizard.state as any).data.author = '';
+        await ctx.reply('Do you want to share this stoic quote with others? 📢', yesNoMenu);
+        return ctx.wizard.selectStep(4);
       }
     }
     return ctx.wizard.next();
   },
 
   async (ctx: MyContext) => {
-    if ('text' in ctx.message!) {
-      (ctx.wizard.state as any).data.author = ctx.message.text;
-    } else {
-      await ctx.reply('Please send text, not other content.');
+    try {
+      if ('text' in ctx.message!) {
+        (ctx.wizard.state as any).data.author = ctx.message.text;
+      } else {
+        await ctx.reply('Please send text, not other content.');
+      }
+    } catch (error) {
+      console.error(error);
+      await ctx.reply('Failed to add a new phrase. Please, try again or ask help @diffurchik');
     }
 
     await ctx.reply('Do you want to share this stoic quote with others? 📢', yesNoMenu);

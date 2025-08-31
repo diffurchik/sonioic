@@ -34,7 +34,7 @@ describe('StoicPhraseService', () => {
       const mockPhraseResult = {
         id: 1,
         content: 'Test phrase',
-        author: 'Animus',
+        author: '',
         ruTranslation: '',
       };
 
@@ -45,10 +45,38 @@ describe('StoicPhraseService', () => {
         userId: 123,
         phrase: 'Test phrase',
         isShared: true,
+        userAuthor: '',
       });
 
       expect(mockStoicRepo.addUserPhrase).toHaveBeenCalledWith('Test phrase', 'Animus', undefined);
       expect(mockSharedRepo.setPhraseSharingPreference).toHaveBeenCalledWith(123, 1, true);
+    });
+
+    it('should successfully add a phrase with custom author', async () => {
+      const mockPhraseResult = {
+        id: 2,
+        content: 'Custom phrase',
+        author: 'Custom Author',
+        ruTranslation: 'Custom translation',
+      };
+
+      mockStoicRepo.addUserPhrase.mockResolvedValue(mockPhraseResult);
+      mockSharedRepo.setPhraseSharingPreference.mockResolvedValue(undefined);
+
+      await stoicPhraseService.addPhraseFromUser({
+        userId: 456,
+        phrase: 'Custom phrase',
+        userAuthor: 'Custom Author',
+        isShared: false,
+        ruTranslation: 'Custom translation',
+      });
+
+      expect(mockStoicRepo.addUserPhrase).toHaveBeenCalledWith(
+        'Custom phrase',
+        'Custom Author',
+        'Custom translation'
+      );
+      expect(mockSharedRepo.setPhraseSharingPreference).toHaveBeenCalledWith(456, 2, false);
     });
 
     it('should handle case when phrase creation fails', async () => {
@@ -105,8 +133,8 @@ describe('StoicPhraseService', () => {
     });
   });
 
-  describe('getRandomSharedPhrase', () => {
-    it('should return a random shared phrase successfully', async () => {
+  describe('getRandomPhraseForUser', () => {
+    it('should return a random shared phrase for user successfully', async () => {
       const mockSharedRows: SharedRow[] = [
         {
           id: 1,
@@ -117,9 +145,9 @@ describe('StoicPhraseService', () => {
         },
         {
           id: 2,
-          userId: 789,
-          phraseId: 101,
-          isShared: true,
+          userId: 123,
+          phraseId: 789,
+          isShared: false,
           showUserName: true,
         },
       ];
@@ -135,30 +163,75 @@ describe('StoicPhraseService', () => {
       MockGetRandomElement.mockReturnValue(mockSharedRows[0]);
       mockStoicRepo.getRowByPhraseId.mockResolvedValue(mockPhrase);
 
-      const result = await stoicPhraseService.getRandomSharedPhrase();
+      const result = await stoicPhraseService.getRandomPhraseForUser(123);
 
-      expect(mockSharedRepo.getRowsByCondition).toHaveBeenCalledWith({ isShared: true });
+      expect(mockSharedRepo.getRowsByCondition).toHaveBeenCalledWith({
+        isShared: true,
+        userId: 123,
+      });
       expect(MockGetRandomElement).toHaveBeenCalledWith(mockSharedRows);
       expect(mockStoicRepo.getRowByPhraseId).toHaveBeenCalledWith(1);
       expect(result).toEqual(mockPhrase);
     });
 
-    it('should return null when no shared rows exist', async () => {
+    it('should return undefined when no shared rows exist for user', async () => {
       mockSharedRepo.getRowsByCondition.mockResolvedValue([]);
 
-      const result = await stoicPhraseService.getRandomSharedPhrase();
+      const result = await stoicPhraseService.getRandomPhraseForUser(123);
 
-      expect(mockSharedRepo.getRowsByCondition).toHaveBeenCalledWith({ isShared: true });
-      expect(result).toBeNull();
+      expect(mockSharedRepo.getRowsByCondition).toHaveBeenCalledWith({
+        isShared: true,
+        userId: 123,
+      });
+      expect(result).toBeUndefined();
     });
 
-    it('should return null when shared rows are undefined', async () => {
+    it('should return undefined when shared rows are undefined', async () => {
       mockSharedRepo.getRowsByCondition.mockResolvedValue(undefined);
 
-      const result = await stoicPhraseService.getRandomSharedPhrase();
+      const result = await stoicPhraseService.getRandomPhraseForUser(123);
 
-      expect(mockSharedRepo.getRowsByCondition).toHaveBeenCalledWith({ isShared: true });
-      expect(result).toBeNull();
+      expect(mockSharedRepo.getRowsByCondition).toHaveBeenCalledWith({
+        isShared: true,
+        userId: 123,
+      });
+      expect(result).toBeUndefined();
+    });
+
+    it('should return undefined when shared rows are null', async () => {
+      mockSharedRepo.getRowsByCondition.mockResolvedValue(undefined);
+
+      const result = await stoicPhraseService.getRandomPhraseForUser(123);
+
+      expect(mockSharedRepo.getRowsByCondition).toHaveBeenCalledWith({
+        isShared: true,
+        userId: 123,
+      });
+      expect(result).toBeUndefined();
+    });
+
+    it('should return undefined when random row has no id', async () => {
+      const mockSharedRows: SharedRow[] = [
+        {
+          id: 0,
+          userId: 123,
+          phraseId: 456,
+          isShared: true,
+          showUserName: false,
+        },
+      ];
+
+      mockSharedRepo.getRowsByCondition.mockResolvedValue(mockSharedRows);
+      MockGetRandomElement.mockReturnValue(mockSharedRows[0]);
+
+      const result = await stoicPhraseService.getRandomPhraseForUser(123);
+
+      expect(mockSharedRepo.getRowsByCondition).toHaveBeenCalledWith({
+        isShared: true,
+        userId: 123,
+      });
+      expect(MockGetRandomElement).toHaveBeenCalledWith(mockSharedRows);
+      expect(result).toBeUndefined();
     });
   });
 });

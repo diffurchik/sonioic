@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { SharedRow } from './types';
 
 const prisma = new PrismaClient();
 
@@ -16,22 +17,27 @@ export class SharedSettingsTable {
     }
   }
 
-  async getRowsByCondition(options: { userId?: number; isShared?: boolean }) {
+  async getRowsByCondition(options: {
+    userId: number;
+    isShared: boolean;
+  }): Promise<SharedRow[] | undefined> {
     const { userId, isShared } = options;
 
     try {
       const result = await prisma.sharedSettings.findMany({
         where: {
-          ...(userId !== undefined && { userId }),
-          ...(isShared !== undefined && { isShared }),
+          OR: [{ userId }, { isShared }],
         },
       });
 
       if (result) {
         return result;
+      } else {
+        return undefined;
       }
     } catch (error) {
-      console.error('Error adding user phrase:', error); //todo
+      console.error('Error getting a phrase:', error);
+      return undefined;
     }
   }
 }

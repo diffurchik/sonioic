@@ -13,28 +13,28 @@ export const actions = (
   phrasesList: Record<number, Quote>,
   userActionState: Record<number, { step: ActionSteps }>
 ) => {
-  // const stoicPhrase = new StoicPhraseTable();
   const userSetting = new UserSetting();
   const stoicPhraseService = new StoicPhraseService();
 
   bot.action(Actions.GET_QUOTE, async (ctx: Context) => {
     const { userId } = getUserData(ctx);
-    // const phrase = await stoicPhrase.getRandomQuote();
-    const phrase = await stoicPhraseService.getRandomSharedPhrase();
-    if (phrase && userId) {
-      phrasesList[userId] = {
-        id: phrase.id,
-        content: phrase.content,
-        ru_translation: phrase.ruTranslation,
-        author: phrase.author,
-      };
-      await ctx.replyWithMarkdownV2(quoteView(phrase.content, phrase.author), {
-        reply_markup: quoteMenu,
-      });
-    } else {
-      await ctx.reply(
-        '❌ Unable to retrieve quote. Please try again later or contact @diffurchik if the issue persists.'
-      );
+    if (userId) {
+      const phrase = await stoicPhraseService.getRandomPhraseForUser(userId);
+      if (phrase && userId) {
+        phrasesList[userId] = {
+          id: phrase.id,
+          content: phrase.content,
+          ru_translation: phrase.ruTranslation,
+          author: phrase.author,
+        };
+        await ctx.replyWithMarkdownV2(quoteView(phrase.content, phrase.author), {
+          reply_markup: quoteMenu,
+        });
+      } else {
+        await ctx.reply(
+          '❌ Unable to retrieve quote. Please try again later or contact @diffurchik if the issue persists.'
+        );
+      }
     }
   });
 
