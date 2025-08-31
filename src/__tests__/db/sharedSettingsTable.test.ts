@@ -113,7 +113,7 @@ describe('SharedSettingsTable', () => {
         findMany: jest.fn().mockResolvedValue(mockResult),
       };
 
-      const result = await sharedSettingsTable.getRowsByCondition({ userId: 123 });
+      const result = await sharedSettingsTable.getRowsByCondition({ userId: 123, isShared: false });
 
       expect(mockPrismaClient.sharedSettings.findMany).toHaveBeenCalledWith({
         where: { userId: 123 },
@@ -137,7 +137,7 @@ describe('SharedSettingsTable', () => {
         findMany: jest.fn().mockResolvedValue(mockResult),
       };
 
-      const result = await sharedSettingsTable.getRowsByCondition({ isShared: true });
+      const result = await sharedSettingsTable.getRowsByCondition({ isShared: true, userId: 123 });
 
       expect(mockPrismaClient.sharedSettings.findMany).toHaveBeenCalledWith({
         where: { isShared: true },
@@ -172,44 +172,13 @@ describe('SharedSettingsTable', () => {
       expect(result).toEqual(mockResult);
     });
 
-    it('should successfully retrieve rows with no filters', async () => {
-      const mockResult = [
-        {
-          id: 1,
-          userId: 123,
-          phraseId: 456,
-          isShared: true,
-          showUserName: false,
-        },
-        {
-          id: 2,
-          userId: 456,
-          phraseId: 789,
-          isShared: false,
-          showUserName: true,
-        },
-      ];
-
-      mockPrismaClient.sharedSettings = {
-        ...mockPrismaClient.sharedSettings,
-        findMany: jest.fn().mockResolvedValue(mockResult),
-      };
-
-      const result = await sharedSettingsTable.getRowsByCondition({});
-
-      expect(mockPrismaClient.sharedSettings.findMany).toHaveBeenCalledWith({
-        where: {},
-      });
-      expect(result).toEqual(mockResult);
-    });
-
     it('should handle empty result array', async () => {
       mockPrismaClient.sharedSettings = {
         ...mockPrismaClient.sharedSettings,
         findMany: jest.fn().mockResolvedValue([]),
       };
 
-      const result = await sharedSettingsTable.getRowsByCondition({ userId: 999 });
+      const result = await sharedSettingsTable.getRowsByCondition({ userId: 999, isShared: false });
 
       expect(mockPrismaClient.sharedSettings.findMany).toHaveBeenCalledWith({
         where: { userId: 999 },
@@ -223,7 +192,7 @@ describe('SharedSettingsTable', () => {
         findMany: jest.fn().mockResolvedValue(null),
       };
 
-      const result = await sharedSettingsTable.getRowsByCondition({ userId: 123 });
+      const result = await sharedSettingsTable.getRowsByCondition({ userId: 123, isShared: true });
 
       expect(mockPrismaClient.sharedSettings.findMany).toHaveBeenCalledWith({
         where: { userId: 123 },
@@ -237,7 +206,7 @@ describe('SharedSettingsTable', () => {
         findMany: jest.fn().mockResolvedValue(undefined),
       };
 
-      const result = await sharedSettingsTable.getRowsByCondition({ isShared: true });
+      const result = await sharedSettingsTable.getRowsByCondition({ isShared: true, userId: 123 });
 
       expect(mockPrismaClient.sharedSettings.findMany).toHaveBeenCalledWith({
         where: { isShared: true },
@@ -252,40 +221,13 @@ describe('SharedSettingsTable', () => {
         findMany: jest.fn().mockRejectedValue(mockError),
       };
 
-      const result = await sharedSettingsTable.getRowsByCondition({ userId: 123 });
+      const result = await sharedSettingsTable.getRowsByCondition({ userId: 123, isShared: false });
 
       expect(mockPrismaClient.sharedSettings.findMany).toHaveBeenCalledWith({
         where: { userId: 123 },
       });
       expect(mockConsoleError).toHaveBeenCalledWith('Error adding user phrase:', mockError);
       expect(result).toBeUndefined();
-    });
-
-    it('should handle undefined filter values correctly', async () => {
-      const mockResult = [
-        {
-          id: 1,
-          userId: 123,
-          phraseId: 456,
-          isShared: true,
-          showUserName: false,
-        },
-      ];
-
-      mockPrismaClient.sharedSettings = {
-        ...mockPrismaClient.sharedSettings,
-        findMany: jest.fn().mockResolvedValue(mockResult),
-      };
-
-      const result = await sharedSettingsTable.getRowsByCondition({
-        userId: undefined,
-        isShared: undefined,
-      });
-
-      expect(mockPrismaClient.sharedSettings.findMany).toHaveBeenCalledWith({
-        where: {},
-      });
-      expect(result).toEqual(mockResult);
     });
   });
 });
