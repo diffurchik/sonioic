@@ -32,13 +32,13 @@ describe('StoicPhraseTable', () => {
       expect(mockPhrases).toContain(result);
     });
 
-    it('should return null when no phrases exist', async () => {
+    it('should return undefined when no phrases exist', async () => {
       mockPrismaClient.stoicPhrase.findMany.mockResolvedValue([]);
 
       const result = await stoicPhraseTable.getRandomQuote();
 
       expect(mockPrismaClient.stoicPhrase.findMany).toHaveBeenCalled();
-      expect(result).toBeNull();
+      expect(result).toBeUndefined();
     });
 
     it('should handle database errors gracefully', async () => {
@@ -49,7 +49,7 @@ describe('StoicPhraseTable', () => {
 
       expect(mockPrismaClient.stoicPhrase.findMany).toHaveBeenCalled();
       expect(mockConsoleError).toHaveBeenCalledWith('Error getting a random phrase:', mockError);
-      expect(result).toBeNull();
+      expect(result).toBeUndefined();
     });
   });
 
