@@ -8,11 +8,11 @@
       <jdbc-url>jdbc:postgresql://localhost:5432/botdb</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="postgres@junction.proxy.rlwy.net" uuid="5b13fb76-1795-4218-88d8-a5b844ca3563">
+    <data-source source="LOCAL" name="railway@junction.proxy.rlwy.net" uuid="5b13fb76-1795-4218-88d8-a5b844ca3563">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://junction.proxy.rlwy.net:5432/postgres</jdbc-url>
+      <jdbc-url>jdbc:postgresql://junction.proxy.rlwy.net:27354/railway</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

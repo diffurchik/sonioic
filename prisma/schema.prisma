@@ -38,7 +38,7 @@ model stoicPhrase {
 model sharedSettings {
   id           Int     @id @default(autoincrement())
   phraseId     Int     @map("id_phrase")
-  userId       Int
+  userId       Int?
   isShared     Boolean @default(false) @map("is_shared")
   showUserName Boolean @default(false) @map("show_user_name")
 
