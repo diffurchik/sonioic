@@ -1,4 +1,4 @@
-name: CI + Deploy
+name: Test and deploy
 
 on:
   push:
@@ -25,7 +25,7 @@ jobs:
     container: ghcr.io/railwayapp/cli:latest
     env:
       RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-      SVC_ID: 4eba832a-9850-4769-92f9-2aeaf32cbbd6
+      SVC_ID: 3d226bfb-042d-4b78-b202-a62c6733f0db
     steps:
       - uses: actions/checkout@v4
       - run: railway up --service=${{ env.SVC_ID }}
