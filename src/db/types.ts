@@ -6,7 +6,7 @@ export type PhraseRow = {
 };
 
 export type SharedRow = {
-  userId: number;
+  userId: number | null;
   isShared: boolean;
   id: number;
   phraseId: number;
